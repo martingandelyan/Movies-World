@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		AEA516412EFC4C0F00AF0017 /* MoviesFromTheWorld.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoviesFromTheWorld.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEA516412EFC4C0F00AF0017 /* Movies World.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Movies World.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -21,6 +21,21 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		AE695A892EFC64A8005D3D1E /* AppEssentialFiles */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AppEssentialFiles;
+			sourceTree = "<group>";
+		};
+		AE695AD52EFC69FB005D3D1E /* SplashScreen */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SplashScreen;
+			sourceTree = "<group>";
+		};
+		AE695ADD2EFC791A005D3D1E /* TabBarMainController */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TabBarMainController;
+			sourceTree = "<group>";
+		};
 		AEA516432EFC4C0F00AF0017 /* MoviesFromTheWorld */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -45,6 +60,9 @@
 		AEA516382EFC4C0F00AF0017 = {
 			isa = PBXGroup;
 			children = (
+				AE695ADD2EFC791A005D3D1E /* TabBarMainController */,
+				AE695AD52EFC69FB005D3D1E /* SplashScreen */,
+				AE695A892EFC64A8005D3D1E /* AppEssentialFiles */,
 				AEA516432EFC4C0F00AF0017 /* MoviesFromTheWorld */,
 				AEA516422EFC4C0F00AF0017 /* Products */,
 			);
@@ -53,7 +71,7 @@
 		AEA516422EFC4C0F00AF0017 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AEA516412EFC4C0F00AF0017 /* MoviesFromTheWorld.app */,
+				AEA516412EFC4C0F00AF0017 /* Movies World.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -74,13 +92,16 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				AE695A892EFC64A8005D3D1E /* AppEssentialFiles */,
+				AE695AD52EFC69FB005D3D1E /* SplashScreen */,
+				AE695ADD2EFC791A005D3D1E /* TabBarMainController */,
 				AEA516432EFC4C0F00AF0017 /* MoviesFromTheWorld */,
 			);
 			name = MoviesFromTheWorld;
 			packageProductDependencies = (
 			);
 			productName = MoviesFromTheWorld;
-			productReference = AEA516412EFC4C0F00AF0017 /* MoviesFromTheWorld.app */;
+			productReference = AEA516412EFC4C0F00AF0017 /* Movies World.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -150,7 +171,6 @@
 				INFOPLIST_FILE = MoviesFromTheWorld/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -159,7 +179,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Martin.MoviesFromTheWorld;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Movies World";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -182,7 +202,6 @@
 				INFOPLIST_FILE = MoviesFromTheWorld/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -191,7 +210,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Martin.MoviesFromTheWorld;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Movies World";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
