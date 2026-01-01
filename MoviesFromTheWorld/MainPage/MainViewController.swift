@@ -28,9 +28,9 @@ class MainViewController: UIViewController {
         
         configuration.sectionInset = UIEdgeInsets(top: inset, left: spacing, bottom: inset, right: spacing)
         
-        configuration.minimumLineSpacing = spacing
+        configuration.minimumLineSpacing = 20
         configuration.minimumInteritemSpacing = spacing
-        configuration.itemSize = CGSize(width: itemWidth, height: itemWidth * 1.8)
+        configuration.itemSize = CGSize(width: itemWidth, height: itemWidth * 2.1)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: configuration)
         collectionView.backgroundColor = .black
@@ -59,16 +59,21 @@ class MainViewController: UIViewController {
         }
     }
     
+    func setupUI() {
+        setupMovieTitleLbl()
+        setupMoviesCollectionView()
+    }
+    
     func setupMovieTitleLbl() {
-        view.addSubview(moviesStaticLbl)
         moviesStaticLbl.translatesAutoresizingMaskIntoConstraints = false
         moviesStaticLbl.text = "Movies"
         moviesStaticLbl.textColor = .white
         moviesStaticLbl.font = UIFont.systemFont(ofSize: 35, weight: .bold)
+        view.addSubview(moviesStaticLbl)
         
         NSLayoutConstraint.activate([
             moviesStaticLbl.topAnchor.constraint(equalTo: view.topAnchor, constant: 50),
-            moviesStaticLbl.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20),
+            moviesStaticLbl.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10),
         ])
     }
     
@@ -81,16 +86,11 @@ class MainViewController: UIViewController {
         moviesCollectionView.register(MainCollectionCell.self, forCellWithReuseIdentifier: "MainCollectionCell")
         
         NSLayoutConstraint.activate([
-            moviesCollectionView.topAnchor.constraint(equalTo: moviesStaticLbl.bottomAnchor, constant: 20),
+            moviesCollectionView.topAnchor.constraint(equalTo: moviesStaticLbl.bottomAnchor, constant: 5),
             moviesCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
             moviesCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
             moviesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }
-    
-    func setupUI() {
-        setupMovieTitleLbl()
-        setupMoviesCollectionView()
     }
 }
 
@@ -109,15 +109,15 @@ extension MainViewController: UICollectionViewDataSource {
     }
 }
 
-//extension MainViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let itemsPerRow: CGFloat = 3
-//        
-//    }
-//}
-
 extension MainViewController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movie = viewModel.movies[indexPath.row]
+        
+        let detailsVC = DetailsViewController(imdbID: movie.imdbID)
+        detailsVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(detailsVC, animated: true)
+        
+    }
 }
 
 

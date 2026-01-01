@@ -18,7 +18,6 @@ class MoviesMainViewModel {
     private let randomSearchedWords = [
         "world",
         "dark",
-        "marvel",
         "super",
         "man",
         "iron",

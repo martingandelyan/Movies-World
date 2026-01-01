@@ -7,15 +7,13 @@
 
 import Foundation
 
-struct Movie: Decodable {
-    
+struct Movie: Codable {
     let imdbID: String
     let title: String
     let year: String
     let poster: String
 
     enum CodingKeys: String, CodingKey {
-        
         case imdbID
         case title = "Title"
         case year = "Year"

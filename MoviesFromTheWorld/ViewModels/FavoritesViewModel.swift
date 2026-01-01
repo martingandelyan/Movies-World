@@ -8,6 +8,18 @@
 import Foundation
 
 class FavoritesViewModel {
+    
+    static let shared = FavoritesViewModel()
+    private init() {}
 
+    var favoriteMovies: [MovieDetails] {
+        FavoritesManager.shared.favoriteMovies
+    }
+    
+    var movieAdded: (() -> Void)?
+    
+    func refreshTab() {
+        movieAdded?()
+    }
 }
 

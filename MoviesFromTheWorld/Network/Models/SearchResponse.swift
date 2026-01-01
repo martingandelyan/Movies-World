@@ -8,11 +8,9 @@
 import Foundation
 
 struct SearchResponse: Decodable {
-    
     let search: [Movie]
 
     enum CodingKeys: String, CodingKey {
-        
         case search = "Search"
     }
 }

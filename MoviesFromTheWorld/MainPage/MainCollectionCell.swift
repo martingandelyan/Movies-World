@@ -22,27 +22,30 @@ class MainCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupCellUI() {
+    private func setupCellUI() {
         let views = [posterImageView, titleLabel]
         views.forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
         }
         
-        titleLabel.numberOfLines = 0
+        titleLabel.numberOfLines = 3
+        titleLabel.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        titleLabel.textColor = .white
         
         posterImageView.contentMode = .scaleAspectFill
         posterImageView.clipsToBounds = true
         posterImageView.layer.cornerRadius = 16
+        posterImageView.backgroundColor = .clear
         
         
         NSLayoutConstraint.activate([
             posterImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
             posterImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             posterImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            posterImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.75), // Marked
+            posterImageView.heightAnchor.constraint(equalTo: posterImageView.widthAnchor, multiplier: 1.5), // Marked
             
-            titleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 6),
+            titleLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 6),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -6),
             titleLabel.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -6) // Marked
@@ -53,10 +56,21 @@ class MainCollectionCell: UICollectionViewCell {
         self.titleLabel.text = movie.title
         
         let moviePosterUrl = movie.poster
-        MoviesNetworkManager.shared.loadPosterImage(from: moviePosterUrl) { moviePoster in
-            self.posterImageView.image = moviePoster
+        MoviesNetworkManager.shared.loadPosterImage(from: moviePosterUrl) { [weak self] moviePoster in
+            DispatchQueue.main.async {
+                self?.posterImageView.image = moviePoster
+            }
         }
     }
     
-
+    func configureFavorites(with movie: MovieDetails) {
+        self.titleLabel.text = movie.title
+        
+        let moviePosterUrl = movie.poster
+        MoviesNetworkManager.shared.loadPosterImage(from: moviePosterUrl) { [weak self] moviePoster in
+            DispatchQueue.main.async {
+                self?.posterImageView.image = moviePoster
+            }
+        }
+    }
 }
