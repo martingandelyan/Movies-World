@@ -11,16 +11,6 @@ class DetailsViewController: UIViewController {
     
     private let viewModel: DetailsViewModel
     
-    init(imdbID: String) {
-        self.viewModel = DetailsViewModel(imdbID: imdbID)
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-        
     private let headerPosterImageView = UIImageView()
     private let smallPosterImageView = UIImageView()
     private let titleLabel = UILabel()
@@ -31,7 +21,15 @@ class DetailsViewController: UIViewController {
     private let aboutMovieLabel = UILabel()
     private let descriptionOfMovieLabel = UILabel()
     private let favoriteBtn = UIButton(type: .system)
-
+    
+    init(imdbID: String) {
+        self.viewModel = DetailsViewModel(imdbID: imdbID)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,14 +72,12 @@ class DetailsViewController: UIViewController {
         smallPosterImageView.contentMode = .scaleAspectFill
         smallPosterImageView.clipsToBounds = true
         smallPosterImageView.layer.cornerRadius = 10
-        
         smallPosterImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(smallPosterImageView)
 
         titleLabel.font = .boldSystemFont(ofSize: 18)
         titleLabel.textColor = .white
         titleLabel.numberOfLines = 2
-        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(titleLabel)
 

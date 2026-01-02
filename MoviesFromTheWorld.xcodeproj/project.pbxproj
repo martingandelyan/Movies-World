@@ -15,10 +15,21 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
+				SearchPage/SearchPageViewController/SearchSortType.swift,
 			);
 			target = AEA516402EFC4C0F00AF0017 /* MoviesFromTheWorld */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		AE1250192F071FAF0039DA14 /* Exceptions for "MoviesFromTheWorld" folder in "Copy Bundle Resources" phase from "MoviesFromTheWorld" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = AEA5163F2EFC4C0F00AF0017 /* Resources */;
+			membershipExceptions = (
+				SearchPage/SearchPageViewController/SearchSortType.swift,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AE695A892EFC64A8005D3D1E /* AppEssentialFiles */ = {
@@ -40,6 +51,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				AEA516532EFC4C1000AF0017 /* Exceptions for "MoviesFromTheWorld" folder in "MoviesFromTheWorld" target */,
+				AE1250192F071FAF0039DA14 /* Exceptions for "MoviesFromTheWorld" folder in "Copy Bundle Resources" phase from "MoviesFromTheWorld" target */,
 			);
 			path = MoviesFromTheWorld;
 			sourceTree = "<group>";
