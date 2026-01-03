@@ -13,6 +13,9 @@ class FavoritesViewController: UIViewController {
     
     private let favoritesStaticLbl = UILabel()
     
+    private let emptyStateTitleLbl = UILabel()
+    private let emptyStateSubtitleLbl = UILabel()
+    
     private let favoritesCollectionView: UICollectionView = {
         let configuration = UICollectionViewFlowLayout()
         configuration.scrollDirection = .vertical
@@ -41,14 +44,56 @@ class FavoritesViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         bindViewModel()
+        setupEmptyStateOfSearchLbls()
+        updateEmptyState()
     }
     
     private func bindViewModel() {
         viewModel.movieAdded = { [weak self] in
             DispatchQueue.main.async {
+                self?.favoritesCollectionView.alpha = 0
                 self?.favoritesCollectionView.reloadData()
+                self?.updateEmptyState()
+            }
+            
+            UIView.animate(withDuration: 0.3) {
+                self?.favoritesCollectionView.alpha = 1
             }
         }
+    }
+    
+    private func updateEmptyState() {
+        let isEmpty = viewModel.favoriteMovies.isEmpty
+        emptyStateTitleLbl.isHidden = !isEmpty
+        emptyStateSubtitleLbl.isHidden = !isEmpty
+        favoritesCollectionView.isHidden = isEmpty
+    }
+    
+    private func setupEmptyStateOfSearchLbls() {
+        emptyStateTitleLbl.text = "No Favourites Yet"
+        emptyStateTitleLbl.textColor = .white
+        emptyStateTitleLbl.font = .systemFont(ofSize: 22, weight: .semibold)
+        emptyStateTitleLbl.textAlignment = .center
+        emptyStateTitleLbl.isHidden = true
+        emptyStateTitleLbl.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emptyStateTitleLbl)
+        
+        emptyStateSubtitleLbl.text = "All movies which marked as favorite will be added here"
+        emptyStateSubtitleLbl.textColor = .lightGray
+        emptyStateSubtitleLbl.font = .systemFont(ofSize: 15)
+        emptyStateSubtitleLbl.textAlignment = .center
+        emptyStateSubtitleLbl.numberOfLines = 0
+        emptyStateSubtitleLbl.isHidden = true
+        emptyStateSubtitleLbl.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emptyStateSubtitleLbl)
+        
+        NSLayoutConstraint.activate([
+            emptyStateTitleLbl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyStateTitleLbl.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            emptyStateSubtitleLbl.topAnchor.constraint(equalTo: emptyStateTitleLbl.bottomAnchor, constant: 20),
+            emptyStateSubtitleLbl.centerXAnchor.constraint(equalTo: emptyStateTitleLbl.centerXAnchor)
+        ])
     }
     
     func setupUI() {

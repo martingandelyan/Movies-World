@@ -11,8 +11,20 @@ class SearchViewController: UIViewController {
     
     private let viewModel = SearchViewModel()
     
+    private let emptySearchStateTitleLbl = UILabel()
+    private let emptySearchStateSubtitleLbl = UILabel()
+    
     private let titleSearchLbl = UILabel()
     private let searchTextField = UITextField()
+    
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.color = .white
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        
+        return indicator
+    }()
     
     private let moreOptionBtn = UIButton(type: .system)
     
@@ -21,17 +33,79 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
+        overrideUserInterfaceStyle = .dark
         setupTitleLbl()
         setupSearchLine()
         setupSearchTableView()
+        setupEmptyStateOfSearchLbls()
+        loadingIndicatorSetup()
         bindViewModel()
 
     }
     
     private func bindViewModel() {
         viewModel.updateSrch = { [weak self] in
+            self?.updateLoadingIndicatorState()
             self?.searchTableView.reloadData()
+            self?.updateEmptyState()
         }
+    }
+    
+    private func updateLoadingIndicatorState() {
+        if viewModel.isLoading {
+            loadingIndicator.startAnimating()
+        } else {
+            loadingIndicator.stopAnimating()
+        }
+    }
+    
+    private func updateEmptyState() {
+        let shouldShowEmpty = viewModel.isSearching && viewModel.searchedMovies.isEmpty
+            emptySearchStateTitleLbl.isHidden = !shouldShowEmpty
+            emptySearchStateSubtitleLbl.isHidden = !shouldShowEmpty
+            searchTableView.isHidden = shouldShowEmpty
+        
+        UIView.animate(withDuration: 0.30) {
+                self.emptySearchStateTitleLbl.alpha = shouldShowEmpty ? 1 : 0
+                self.emptySearchStateSubtitleLbl.alpha = shouldShowEmpty ? 1 : 0
+                self.searchTableView.alpha = shouldShowEmpty ? 0 : 1
+            }
+    }
+    
+    private func loadingIndicatorSetup() {
+        view.addSubview(loadingIndicator)
+        
+        NSLayoutConstraint.activate([
+            loadingIndicator.centerXAnchor.constraint(equalTo: emptySearchStateTitleLbl.centerXAnchor),
+            loadingIndicator.bottomAnchor.constraint(equalTo: emptySearchStateTitleLbl.topAnchor, constant: -5)
+        ])
+    }
+    
+    private func setupEmptyStateOfSearchLbls() {
+        emptySearchStateTitleLbl.text = "Oh No Isn't This So Embarassing?"
+        emptySearchStateTitleLbl.textColor = .white
+        emptySearchStateTitleLbl.font = .systemFont(ofSize: 22, weight: .semibold)
+        emptySearchStateTitleLbl.textAlignment = .center
+        emptySearchStateTitleLbl.isHidden = true
+        emptySearchStateTitleLbl.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emptySearchStateTitleLbl)
+        
+        emptySearchStateSubtitleLbl.text = "I cannot find any movie with this name"
+        emptySearchStateSubtitleLbl.textColor = .lightGray
+        emptySearchStateSubtitleLbl.font = .systemFont(ofSize: 15)
+        emptySearchStateSubtitleLbl.textAlignment = .center
+        emptySearchStateSubtitleLbl.numberOfLines = 0
+        emptySearchStateSubtitleLbl.isHidden = true
+        emptySearchStateSubtitleLbl.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emptySearchStateSubtitleLbl)
+        
+        NSLayoutConstraint.activate([
+            emptySearchStateTitleLbl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptySearchStateTitleLbl.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            emptySearchStateSubtitleLbl.topAnchor.constraint(equalTo: emptySearchStateTitleLbl.bottomAnchor, constant: 20),
+            emptySearchStateSubtitleLbl.centerXAnchor.constraint(equalTo: emptySearchStateTitleLbl.centerXAnchor)
+        ])
     }
 
     private func setupTitleLbl() {
@@ -81,13 +155,17 @@ class SearchViewController: UIViewController {
             self?.searchTextChanged()
         }), for: .editingChanged)
         
+        //MARK - dropdown menu
         let image = UIImage(systemName: "ellipsis.circle")
             moreOptionBtn.setImage(image, for: .normal)
             moreOptionBtn.tintColor = .white
             moreOptionBtn.showsMenuAsPrimaryAction = true
             moreOptionBtn.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(moreOptionBtn)
-
+            moreOptionBtn.tintColor = .white
+            moreOptionBtn.showsMenuAsPrimaryAction = true
+            moreOptionBtn.menu = makeSortMenu()
+            
         NSLayoutConstraint.activate([
             searchTextField.topAnchor.constraint(equalTo: titleSearchLbl.bottomAnchor, constant: 16),
             searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
@@ -99,6 +177,45 @@ class SearchViewController: UIViewController {
             moreOptionBtn.widthAnchor.constraint(equalToConstant: 25),
             moreOptionBtn.heightAnchor.constraint(equalToConstant: 25)
         ])
+    }
+    
+    private func updateMenu() {
+        moreOptionBtn.menu = makeSortMenu()
+    }
+    
+    private func makeSortMenu() -> UIMenu {
+        let name = UIAction(
+            title: "Name",
+            state: viewModel.currentSortedType == .name ? .on : .off
+        ) { [weak self] _ in
+            self?.viewModel.currentSortedType = .name
+            self?.viewModel.sortByTitle()
+            self?.updateMenu()
+        }
+        
+        let year = UIAction(
+            title: "Year",
+            state: viewModel.currentSortedType == .year ? .on : .off
+        ) { [weak self] _ in
+            self?.viewModel.currentSortedType = .year
+            self?.viewModel.sortByYear()
+            self?.updateMenu()
+        }
+        
+        let type = UIAction(
+            title: "Type",
+            state: viewModel.currentSortedType == .type ? .on : .off
+        ) { [weak self] _ in
+            self?.viewModel.currentSortedType = .type
+            self?.viewModel.sortByType()
+            self?.updateMenu()
+        }
+        
+        return UIMenu(
+            title: "",
+            options: .singleSelection,
+            children: [name, year, type]
+        )
     }
     
     private func searchTextChanged() {

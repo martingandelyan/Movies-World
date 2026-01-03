@@ -54,7 +54,11 @@ class MainViewController: UIViewController {
     func bindViewModelToView() {
         viewModel.moviesUploaded = { [weak self] in
             DispatchQueue.main.async {
-                self?.moviesCollectionView.reloadData()
+                guard let self = self else { return }
+                
+                UIView.transition(with: self.moviesCollectionView, duration: 0.3, options: .transitionCrossDissolve) {
+                    self.moviesCollectionView.reloadData()
+                }
             }
         }
     }
@@ -116,18 +120,36 @@ extension MainViewController: UICollectionViewDelegate {
         let detailsVC = DetailsViewController(imdbID: movie.imdbID)
         detailsVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(detailsVC, animated: true)
-        
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        cell.alpha = 0
+        cell.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+        UIView.animate(
+            withDuration: 0.3,
+            delay: 0.05 * Double(indexPath.row % 6),
+            options: [.curveEaseOut]
+        ) {
+            cell.alpha = 1
+            cell.transform = .identity
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        UIView.animate(withDuration: 0.1) {
+            cell?.transform = CGAffineTransform(scaleX: 0.96, y: 0.96)
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        UIView.animate(withDuration: 0.1) {
+            cell?.transform = .identity
+        }
     }
 }
 
-
-
-
-
-
-import SwiftUI
-
-#Preview {
-    MainViewController()
-}
 

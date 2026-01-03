@@ -75,8 +75,8 @@ class SearchViewCell: UITableViewCell {
         contentView.addSubview(stackView)
         
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 12),
-            stackView.topAnchor.constraint(equalTo: titleLbl.bottomAnchor, constant: 2),
+//            stackView.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 12),
+            stackView.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 16),
             stackView.bottomAnchor.constraint(equalTo: posterImageView.bottomAnchor)
         ])
     }
