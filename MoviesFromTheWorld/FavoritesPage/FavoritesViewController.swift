@@ -54,10 +54,10 @@ class FavoritesViewController: UIViewController {
                 self?.favoritesCollectionView.alpha = 0
                 self?.favoritesCollectionView.reloadData()
                 self?.updateEmptyState()
-            }
-            
-            UIView.animate(withDuration: 0.3) {
-                self?.favoritesCollectionView.alpha = 1
+                
+                UIView.animate(withDuration: 0.3) {
+                    self?.favoritesCollectionView.alpha = 1
+                }
             }
         }
     }

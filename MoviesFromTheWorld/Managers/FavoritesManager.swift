@@ -34,6 +34,8 @@ final class FavoritesManager {
             if self.favoriteMovies.isEmpty || !self.favoriteMovies.contains(where: {
                 $0.imdbID == movie.imdbID } ) {
                 self.favoriteMovies.append(movie)
+                
+                FavoritesViewModel.shared.refreshTab()
             }
         }
     }
@@ -41,6 +43,8 @@ final class FavoritesManager {
     func removeMovieFromFavorites(movie: MovieDetails) {
         threadSafeQueue.async {
             self.favoriteMovies.removeAll(where: { $0.imdbID == movie.imdbID } )
+            
+            FavoritesViewModel.shared.refreshTab()
         }
     }
     

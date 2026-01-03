@@ -9,6 +9,8 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
+    private var tap = UITapGestureRecognizer()
+    
     private let viewModel = SearchViewModel()
     
     private let emptySearchStateTitleLbl = UILabel()
@@ -39,6 +41,7 @@ class SearchViewController: UIViewController {
         setupSearchTableView()
         setupEmptyStateOfSearchLbls()
         loadingIndicatorSetup()
+        setupTapRecognized()
         bindViewModel()
 
     }
@@ -49,6 +52,15 @@ class SearchViewController: UIViewController {
             self?.searchTableView.reloadData()
             self?.updateEmptyState()
         }
+    }
+    private func setupTapRecognized() {
+        tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     private func updateLoadingIndicatorState() {
@@ -148,6 +160,7 @@ class SearchViewController: UIViewController {
         searchTextField.rightView = rightContainer
         searchTextField.rightViewMode = .always
         searchTextField.tintColor = .white
+        searchTextField.delegate = self
         view.addSubview(searchTextField)
         
         searchTextField.addAction(UIAction(handler: { [weak self] _ in
@@ -231,6 +244,8 @@ class SearchViewController: UIViewController {
         
         view.addSubview(searchTableView)
         
+        searchTableView.keyboardDismissMode = .onDrag
+        
         NSLayoutConstraint.activate([
             searchTableView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 16),
             searchTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -261,6 +276,13 @@ extension SearchViewController: UITableViewDelegate {
         
         let detailsVC = DetailsViewController(imdbID: currentMovie.imdbID)
         navigationController?.pushViewController(detailsVC, animated: true)
+    }
+}
+
+extension SearchViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
 
