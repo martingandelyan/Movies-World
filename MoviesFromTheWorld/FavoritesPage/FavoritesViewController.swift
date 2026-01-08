@@ -48,6 +48,7 @@ class FavoritesViewController: UIViewController {
         updateEmptyState()
     }
     
+    //MARK - UI and Binding setup
     private func bindViewModel() {
         viewModel.movieAdded = { [weak self] in
             DispatchQueue.main.async {

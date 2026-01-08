@@ -38,8 +38,13 @@ class SplashScreenViewController: UIViewController {
     }
     
     private func goToMainTabBar() {
-        if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
-            sceneDelegate.window?.rootViewController = MainTabBarViewController()
+        UIView.animate(withDuration: 0.6) {
+            self.splashImageView.alpha = 0
+            self.splashImageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+        } completion: { _ in
+            if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
+                sceneDelegate.window?.rootViewController = MainTabBarViewController()
+            }
         }
     }
 }

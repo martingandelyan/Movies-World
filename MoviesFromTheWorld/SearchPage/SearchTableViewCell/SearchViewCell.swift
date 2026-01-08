@@ -20,10 +20,16 @@ class SearchViewCell: UITableViewCell {
         setupUI()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        posterImageView.image = nil
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK - UI setup
     func setupUI() {
         let allFields = [titleLbl, movieYearLbl, movieTypeLbl, posterImageView]
         allFields.forEach {
@@ -85,11 +91,6 @@ class SearchViewCell: UITableViewCell {
         titleLbl.text = movie.title
         movieYearLbl.text = "🗓️ \(movie.year)"
         movieTypeLbl.text = "🎬 \(movie.type)"
-
-        MoviesNetworkManager.shared.loadPosterImage(from: movie.poster) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.posterImageView.image = image
-            }
-        }
+        posterImageView.setImage(from: movie.poster)
     }
 }

@@ -51,6 +51,7 @@ class DetailsViewController: UIViewController {
         viewModel.loadDetails()
     }
     
+    //MARK - UI and Binding setup
     func bindDetailViewModel() {
         viewModel.detailsUploaded = { [weak self] in
             let movie = self?.viewModel.detailsMovie
@@ -267,12 +268,8 @@ class DetailsViewController: UIViewController {
         
         let isFavoriteMovie = viewModel.isFavorite(movie: movie)
         updateFavoriteBtn(isFavorite: isFavoriteMovie)
-
-        MoviesNetworkManager.shared.loadPosterImage(from: movie.poster) { [weak self] image in
-            DispatchQueue.main.async {
-                self?.headerPosterImageView.image = image
-                self?.smallPosterImageView.image = image
-            }
-        }
+        
+        smallPosterImageView.setImage(from: movie.poster)
+        headerPosterImageView.setImage(from: movie.poster)
     }
 }

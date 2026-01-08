@@ -31,8 +31,8 @@ class MoviesMainViewModel {
         let randomWord = randomSearchedWords.randomElement() ?? "city"
         
         moviesManager.getMovies(searchedName: randomWord) { randomLoadedMovies in
-            print("movies loaded\(randomLoadedMovies.count)")
-            self.movies = randomLoadedMovies
+            print("movies loaded\(randomLoadedMovies?.count)")
+            self.movies = randomLoadedMovies ?? []
             self.moviesUploaded?()
         }
     }

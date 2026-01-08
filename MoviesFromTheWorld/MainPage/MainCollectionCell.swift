@@ -15,13 +15,18 @@ class MainCollectionCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupCellUI()
-        
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        posterImageView.image = nil
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK - setup UI for Main view
     private func setupCellUI() {
         let views = [posterImageView, titleLabel]
         views.forEach {
@@ -54,23 +59,11 @@ class MainCollectionCell: UICollectionViewCell {
     
     func configure(with movie: Movie) {
         self.titleLabel.text = movie.title
-        
-        let moviePosterUrl = movie.poster
-        MoviesNetworkManager.shared.loadPosterImage(from: moviePosterUrl) { [weak self] moviePoster in
-            DispatchQueue.main.async {
-                self?.posterImageView.image = moviePoster
-            }
-        }
+        self.posterImageView.setImage(from: movie.poster)
     }
     
     func configureFavorites(with movie: MovieDetails) {
         self.titleLabel.text = movie.title
-        
-        let moviePosterUrl = movie.poster
-        MoviesNetworkManager.shared.loadPosterImage(from: moviePosterUrl) { [weak self] moviePoster in
-            DispatchQueue.main.async {
-                self?.posterImageView.image = moviePoster
-            }
-        }
+        self.posterImageView.setImage(from: movie.poster)
     }
 }

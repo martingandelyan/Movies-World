@@ -13,7 +13,7 @@ final class MoviesNetworkManager {
     static let shared = MoviesNetworkManager()
     private init() {}
     
-    func getMovies(searchedName: String, completion: @escaping ([Movie]) -> Void) {
+    func getMovies(searchedName: String, completion: @escaping ([Movie]?) -> Void) {
         
         print("get movies called")
         
@@ -35,10 +35,13 @@ final class MoviesNetworkManager {
                     completion(decodedMovie.search)
                 }
             } catch {
+                completion(nil)
                 print("decode error \(error)")
             }
         }.resume()
     }
+    
+    //MARK - networking for getting details of the specific movie
     
     func getDetails(imdbID: String, completion: @escaping (MovieDetails) -> Void) {
         let url = MovieNetworkAPI.getDetailsUrl(imdbID: imdbID)
@@ -61,19 +64,6 @@ final class MoviesNetworkManager {
                 }
             } catch {
                 print("decode error\(error)")
-            }
-        }.resume()
-    }
-    
-    func loadPosterImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
-        guard let url = URL(string: urlString) else { return }
-        
-        URLSession.shared.dataTask(with: url) { data, _, _ in
-            guard let data = data else { return }
-            guard let image = UIImage(data: data) else { return }
-            
-            DispatchQueue.main.async {
-                completion(image)
             }
         }.resume()
     }

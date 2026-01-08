@@ -34,7 +34,7 @@ class SearchViewModel {
         
         MoviesNetworkManager.shared.getMovies(searchedName: text) { [weak self] searchedMoviesFromClosure in
             DispatchQueue.main.async {
-                self?.searchedMovies = searchedMoviesFromClosure
+                self?.searchedMovies = searchedMoviesFromClosure ?? []
                 self?.isLoading = false
                 self?.updateSrch?()
             }

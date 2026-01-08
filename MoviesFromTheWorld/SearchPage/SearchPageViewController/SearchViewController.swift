@@ -43,9 +43,9 @@ class SearchViewController: UIViewController {
         loadingIndicatorSetup()
         setupTapRecognized()
         bindViewModel()
-
     }
     
+    //MARK - UI and Binding setup
     private func bindViewModel() {
         viewModel.updateSrch = { [weak self] in
             self?.updateLoadingIndicatorState()
@@ -53,6 +53,7 @@ class SearchViewController: UIViewController {
             self?.updateEmptyState()
         }
     }
+    
     private func setupTapRecognized() {
         tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false

@@ -44,6 +44,21 @@
 			path = MoviesFromTheWorld;
 			sourceTree = "<group>";
 		};
+		AED8E3002F0FEF5F002D1673 /* NetworkingImage Cache */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "NetworkingImage Cache";
+			sourceTree = "<group>";
+		};
+		AED8E3052F0FF12F002D1673 /* Extensions */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		AED8E30E2F0FF469002D1673 /* Network */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Network;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +78,9 @@
 				AE695ADD2EFC791A005D3D1E /* TabBarMainController */,
 				AE695AD52EFC69FB005D3D1E /* SplashScreen */,
 				AE695A892EFC64A8005D3D1E /* AppEssentialFiles */,
+				AED8E30E2F0FF469002D1673 /* Network */,
+				AED8E3052F0FF12F002D1673 /* Extensions */,
+				AED8E3002F0FEF5F002D1673 /* NetworkingImage Cache */,
 				AEA516432EFC4C0F00AF0017 /* MoviesFromTheWorld */,
 				AEA516422EFC4C0F00AF0017 /* Products */,
 			);
@@ -96,6 +114,9 @@
 				AE695AD52EFC69FB005D3D1E /* SplashScreen */,
 				AE695ADD2EFC791A005D3D1E /* TabBarMainController */,
 				AEA516432EFC4C0F00AF0017 /* MoviesFromTheWorld */,
+				AED8E3002F0FEF5F002D1673 /* NetworkingImage Cache */,
+				AED8E3052F0FF12F002D1673 /* Extensions */,
+				AED8E30E2F0FF469002D1673 /* Network */,
 			);
 			name = MoviesFromTheWorld;
 			packageProductDependencies = (

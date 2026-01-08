@@ -44,9 +44,9 @@ class MainViewController: UIViewController {
         setupUI()
         bindViewModelToView()
         loadMovies()
-        
     }
     
+    //MARK - UI and Binding setup
     func loadMovies() {
         viewModel.loadRandomMovies()
     }
