@@ -10,6 +10,9 @@ import Foundation
 class SearchViewModel {
     
     private(set) var searchedMovies: [Movie] = []
+    private var currentPage = 1
+    private var currentEnteredText = ""
+    private var isFetching = false
     
     var currentSortedType: SearchSortType = .name
     
@@ -17,43 +20,76 @@ class SearchViewModel {
     var isLoading = false
     
     var updateSrch: (() -> Void)?
-
+    
+    // MARK: - New Search
     func search(text: String) {
         guard !text.isEmpty else {
-            searchedMovies = []
-            isSearching = false
-            isLoading = false
-            updateSrch?()
-            return
+            DispatchQueue.main.async {
+                self.searchedMovies.removeAll()
+                self.isSearching = false
+                self.isLoading = false
+                self.updateSrch?()
+            }
+                return
         }
         
-        isSearching = true
+        //MARK: New search
+        currentPage = 1
+        currentEnteredText = text
+        
+        DispatchQueue.main.async {
+            self.searchedMovies.removeAll()
+            self.isSearching = true
+            self.isLoading = true
+            self.updateSrch?()
+        }
+        fetchSearchedMovies()
+    }
+    
+    func loadMoreMoviesIfNeeded(index: Int) {
+        if index == self.searchedMovies.count - 2 {
+            fetchSearchedMovies()
+        }
+    }
+    
+    func fetchSearchedMovies() {
+        guard !isFetching else { return }
         isLoading = true
-        updateSrch?()
+        isFetching = true
         
-        
-        MoviesNetworkManager.shared.getMovies(searchedName: text) { [weak self] searchedMoviesFromClosure in
-            DispatchQueue.main.async {
-                self?.searchedMovies = searchedMoviesFromClosure ?? []
-                self?.isLoading = false
-                self?.updateSrch?()
+        DispatchQueue.main.async {
+            MoviesNetworkManager.shared.getMovies(searchedName: self.currentEnteredText, page: self.currentPage) { [weak self] searchedMvs, _ in
+                
+                guard let self else { return }
+                
+                self.searchedMovies.append(contentsOf: searchedMvs ?? [])
+                self.currentPage += 1
+                self.isFetching = false
+                self.isLoading = false
+                self.updateSrch?()
             }
         }
     }
     
     func sortByTitle() {
-        searchedMovies.sort { $0.title < $1.title }
-        updateSrch?()
+        DispatchQueue.main.async {
+            self.searchedMovies.sort { $0.title < $1.title }
+            self.updateSrch?()
+        }
     }
 
     func sortByYear() {
-        searchedMovies.sort { $0.year > $1.year }
-        updateSrch?()
+        DispatchQueue.main.async {
+            self.searchedMovies.sort { $0.year > $1.year }
+            self.updateSrch?()
+        }
     }
     
     func sortByType() {
-        searchedMovies.sort { $0.type < $1.type }
-        updateSrch?()
+        DispatchQueue.main.async {
+            self.searchedMovies.sort { $0.type < $1.type }
+            self.updateSrch?()
+        }
     }
 }
 

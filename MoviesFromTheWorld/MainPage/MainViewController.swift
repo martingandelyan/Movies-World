@@ -9,10 +9,13 @@ import UIKit
 
 class MainViewController: UIViewController {
     
+    //MARK - Static label of the view
     private let moviesStaticLbl = UILabel()
     
+    //MARK - Main page view model
     private let viewModel = MoviesMainViewModel()
     
+    //MARK - Collection view setup for Main page
     private let moviesCollectionView: UICollectionView = {
         let configuration = UICollectionViewFlowLayout()
         configuration.scrollDirection = .vertical
@@ -37,6 +40,7 @@ class MainViewController: UIViewController {
         return collectionView
     }()
 
+    //MARK - App loading
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -46,11 +50,12 @@ class MainViewController: UIViewController {
         loadMovies()
     }
     
-    //MARK - UI and Binding setup
+    //MARK - Load random movies
     func loadMovies() {
         viewModel.loadRandomMovies()
     }
     
+    //MARK - Binding of ViewModel to current view
     func bindViewModelToView() {
         viewModel.moviesUploaded = { [weak self] in
             DispatchQueue.main.async {
@@ -63,6 +68,7 @@ class MainViewController: UIViewController {
         }
     }
     
+    //MARK - Setup Main page UI
     func setupUI() {
         setupMovieTitleLbl()
         setupMoviesCollectionView()
@@ -81,6 +87,7 @@ class MainViewController: UIViewController {
         ])
     }
     
+    //MARK - registration of collection view
     func setupMoviesCollectionView() {
         view.addSubview(moviesCollectionView)
         moviesCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -109,6 +116,8 @@ extension MainViewController: UICollectionViewDataSource {
         let movie = viewModel.movies[indexPath.row]
         cell.configure(with: movie)
         
+        viewModel.loadMoreOnMainIfNeeded(index: indexPath.row)
+                
         return cell
     }
 }
@@ -124,6 +133,7 @@ extension MainViewController: UICollectionViewDelegate {
         navigationController?.navigationBar.prefersLargeTitles = false
     }
     
+    //MARK - Smooth animation for each cell
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         cell.alpha = 0
         cell.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
@@ -151,5 +161,4 @@ extension MainViewController: UICollectionViewDelegate {
         }
     }
 }
-
 

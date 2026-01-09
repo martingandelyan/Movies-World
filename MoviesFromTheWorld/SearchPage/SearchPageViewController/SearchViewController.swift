@@ -9,16 +9,20 @@ import UIKit
 
 class SearchViewController: UIViewController {
     
+    //MARK - Tap recognizer, to be able to hide keyboard with tap on the screen
     private var tap = UITapGestureRecognizer()
     
+    //MARK - Search view model creation
     private let viewModel = SearchViewModel()
     
+    //MARK - UI variables
     private let emptySearchStateTitleLbl = UILabel()
     private let emptySearchStateSubtitleLbl = UILabel()
     
     private let titleSearchLbl = UILabel()
     private let searchTextField = UITextField()
     
+    //MARK - Loading indicator for active searching state
     private let loadingIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(style: .large)
         indicator.color = .white
@@ -28,10 +32,13 @@ class SearchViewController: UIViewController {
         return indicator
     }()
     
+    //MARK - Filter button for searched movies
     private let moreOptionBtn = UIButton(type: .system)
     
+    //MARK - Table view creation
     private var searchTableView = UITableView()
 
+    //MARK - App loading
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
@@ -45,15 +52,18 @@ class SearchViewController: UIViewController {
         bindViewModel()
     }
     
-    //MARK - UI and Binding setup
+    //MARK - Binding of ViewModel to current view
     private func bindViewModel() {
         viewModel.updateSrch = { [weak self] in
-            self?.updateLoadingIndicatorState()
-            self?.searchTableView.reloadData()
-            self?.updateEmptyState()
+            DispatchQueue.main.async {
+                self?.updateLoadingIndicatorState()
+                self?.searchTableView.reloadData()
+                self?.updateEmptyState()
+            }
         }
     }
     
+    //MARK - Function that allows us to hide keyboard with tap on the screen, while searching or typing something
     private func setupTapRecognized() {
         tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tap.cancelsTouchesInView = false
@@ -64,6 +74,7 @@ class SearchViewController: UIViewController {
         view.endEditing(true)
     }
     
+    //MARK - Loading indicator state
     private func updateLoadingIndicatorState() {
         if viewModel.isLoading {
             loadingIndicator.startAnimating()
@@ -72,6 +83,7 @@ class SearchViewController: UIViewController {
         }
     }
     
+    //MARK - Smoom empty and nonEmpty state setup
     private func updateEmptyState() {
         let shouldShowEmpty = viewModel.isSearching && viewModel.searchedMovies.isEmpty
             emptySearchStateTitleLbl.isHidden = !shouldShowEmpty
@@ -94,6 +106,7 @@ class SearchViewController: UIViewController {
         ])
     }
     
+    //MARK - Empty state of view setup
     private func setupEmptyStateOfSearchLbls() {
         emptySearchStateTitleLbl.text = "Oh No Isn't This So Embarassing?"
         emptySearchStateTitleLbl.textColor = .white
@@ -134,6 +147,7 @@ class SearchViewController: UIViewController {
         ])
     }
     
+    //MARK - searchField setup
     private func setupSearchLine() {
         // LEFT text padding
         let leftPadding = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 40))
@@ -169,7 +183,7 @@ class SearchViewController: UIViewController {
             self?.searchTextChanged()
         }), for: .editingChanged)
         
-        //MARK - dropdown menu
+        //MARK - Dropdown menu to filter movies setup
         let image = UIImage(systemName: "ellipsis.circle")
             moreOptionBtn.setImage(image, for: .normal)
             moreOptionBtn.tintColor = .white
@@ -266,6 +280,8 @@ extension SearchViewController: UITableViewDataSource {
         
         let searchedMovies = viewModel.searchedMovies[indexPath.row]
         cell.configureSearchedMovies(with: searchedMovies)
+        
+        viewModel.loadMoreMoviesIfNeeded(index: indexPath.row)
         
         return cell
     }

@@ -9,13 +9,16 @@ import UIKit
 
 class FavoritesViewController: UIViewController {
     
+    //MARK - Favorites view model
     private let viewModel = FavoritesViewModel.shared
     
+    //MARK - UI variables
     private let favoritesStaticLbl = UILabel()
     
     private let emptyStateTitleLbl = UILabel()
     private let emptyStateSubtitleLbl = UILabel()
     
+    //MARK - Collection view setup
     private let favoritesCollectionView: UICollectionView = {
         let configuration = UICollectionViewFlowLayout()
         configuration.scrollDirection = .vertical
@@ -27,10 +30,8 @@ class FavoritesViewController: UIViewController {
         let itemsPerRow: CGFloat = screenWidth < 375 ? 2 : 3
         let totalSpacing = (itemsPerRow - 1) * spacing + inset * 2
         let itemWidth = (screenWidth - totalSpacing) / itemsPerRow
-       
         
         configuration.sectionInset = UIEdgeInsets(top: inset, left: spacing, bottom: inset, right: spacing)
-        
         configuration.minimumLineSpacing = 20
         configuration.minimumInteritemSpacing = spacing
         configuration.itemSize = CGSize(width: itemWidth, height: itemWidth * 2.1)
@@ -40,12 +41,13 @@ class FavoritesViewController: UIViewController {
         return collectionView
     }()
     
+    //MARK - App loading
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
-        bindViewModel()
+        setupNonEmptyState()
         setupEmptyStateOfSearchLbls()
         updateEmptyState()
+        bindViewModel()
     }
     
     //MARK - UI and Binding setup
@@ -63,6 +65,7 @@ class FavoritesViewController: UIViewController {
         }
     }
     
+    //MARK - View emptystate control
     private func updateEmptyState() {
         let isEmpty = viewModel.favoriteMovies.isEmpty
         emptyStateTitleLbl.isHidden = !isEmpty
@@ -70,6 +73,7 @@ class FavoritesViewController: UIViewController {
         favoritesCollectionView.isHidden = isEmpty
     }
     
+    //MARK - UI for emptystate view
     private func setupEmptyStateOfSearchLbls() {
         emptyStateTitleLbl.text = "No Favourites Yet"
         emptyStateTitleLbl.textColor = .white
@@ -97,7 +101,8 @@ class FavoritesViewController: UIViewController {
         ])
     }
     
-    func setupUI() {
+    //MARK - Non-empty state setup
+    func setupNonEmptyState() {
         setupDetailsTitleLbl()
         setupMoviesCollectionView()
     }
@@ -115,6 +120,7 @@ class FavoritesViewController: UIViewController {
         ])
     }
     
+    //MARK - registration of collection view
     func setupMoviesCollectionView() {
         view.addSubview(favoritesCollectionView)
         favoritesCollectionView.translatesAutoresizingMaskIntoConstraints = false

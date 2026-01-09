@@ -26,7 +26,7 @@ class MainCollectionCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK - setup UI for Main view
+    //MARK - Setup UI for Main view
     private func setupCellUI() {
         let views = [posterImageView, titleLabel]
         views.forEach {
@@ -57,11 +57,13 @@ class MainCollectionCell: UICollectionViewCell {
         ])
     }
     
+    //MARK - Main page configuration
     func configure(with movie: Movie) {
         self.titleLabel.text = movie.title
         self.posterImageView.setImage(from: movie.poster)
     }
     
+    //MARK - Favorites page configuration
     func configureFavorites(with movie: MovieDetails) {
         self.titleLabel.text = movie.title
         self.posterImageView.setImage(from: movie.poster)

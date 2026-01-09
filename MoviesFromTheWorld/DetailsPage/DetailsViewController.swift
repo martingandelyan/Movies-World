@@ -9,8 +9,10 @@ import UIKit
 
 class DetailsViewController: UIViewController {
     
+    //MARK - Details view model
     private let viewModel: DetailsViewModel
     
+    //MARK - UI variables
     private let headerPosterImageView = UIImageView()
     private let smallPosterImageView = UIImageView()
     private let titleLabel = UILabel()
@@ -43,7 +45,8 @@ class DetailsViewController: UIViewController {
             self.view.alpha = 1
         }
     }
-
+    
+    //MARK - App loading
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -51,7 +54,7 @@ class DetailsViewController: UIViewController {
         viewModel.loadDetails()
     }
     
-    //MARK - UI and Binding setup
+    //MARK - Binding setup
     func bindDetailViewModel() {
         viewModel.detailsUploaded = { [weak self] in
             let movie = self?.viewModel.detailsMovie
@@ -60,6 +63,7 @@ class DetailsViewController: UIViewController {
         }
     }
     
+    //MARK - UI setup
     func setupUI() {
         setupHeaderImage()
         setupSmallPosterArea()
@@ -146,7 +150,7 @@ class DetailsViewController: UIViewController {
     }
     
     func movieDescriptionDesignSetup() {
-        // MARK - upperPart of description design
+        // MARK - Upper part of "About Movie" label
         let labels = [yearLabel, genre, runtime]
         
         labels.forEach {
@@ -173,7 +177,7 @@ class DetailsViewController: UIViewController {
             stackViewOfLabels.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 25),
         ])
         
-        //MARK - downPart of design
+        //MARK - The Bottom UI of "year, genre, runtime" labels
         aboutMovieLabel.text = "About Movie"
         aboutMovieLabel.font = .boldSystemFont(ofSize: 18)
         aboutMovieLabel.textColor = .white
@@ -209,7 +213,7 @@ class DetailsViewController: UIViewController {
         descriptionOfMovieLabel.font = .systemFont(ofSize: 15)
         descriptionOfMovieLabel.textColor = .lightGray
         
-        //MARK - allTogether = "about title" label + description of movie
+        //MARK - allTogether = "About Movie" label + description of movie
         let descriptionOfMovieDownStack = UIStackView(arrangedSubviews: [
             descriptionStack,
             makeHorizontalDivide(),
@@ -228,6 +232,7 @@ class DetailsViewController: UIViewController {
         ])
     }
     
+    //MARK - Vertical divide of upper part labels
     func makeVerticalDivide() -> UIView {
         let view = UIView()
         view.backgroundColor = .darkGray
@@ -239,6 +244,7 @@ class DetailsViewController: UIViewController {
         return view
     }
     
+    //MARK - Horizontal divide for "About Movie" label
     func makeHorizontalDivide() -> UIView {
         let view = UIView()
         view.backgroundColor = .darkGray
@@ -249,7 +255,7 @@ class DetailsViewController: UIViewController {
         return view
     }
     
-    //MARK - favorite Button state
+    //MARK - Favorite Button state
     func updateFavoriteBtn(isFavorite: Bool) {
         if isFavorite {
             favoriteBtn.setImage(UIImage(systemName: "heart.fill"), for: .normal)
@@ -258,6 +264,7 @@ class DetailsViewController: UIViewController {
         }
     }
     
+    //MARK - UI configuration
     private func configure(with movie: MovieDetails) {
         titleLabel.text = movie.title
         yearLabel.text = "🗓️ \(movie.year)"

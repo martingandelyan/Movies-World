@@ -6,18 +6,18 @@
 //
 
 import Foundation
-import UIKit
 
 final class MoviesNetworkManager {
     
     static let shared = MoviesNetworkManager()
     private init() {}
     
-    func getMovies(searchedName: String, completion: @escaping ([Movie]?) -> Void) {
+    //MARK: - Get searched movie
+    func getMovies(searchedName: String, page: Int, completion: @escaping ([Movie]?, Int) -> Void) {
         
         print("get movies called")
         
-        let url = MovieNetworkAPI.getSearchUrl(searchedName: searchedName)
+        let url = MovieNetworkAPI.getSearchUrl(searchedName: searchedName, page: page)
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error {
@@ -27,22 +27,26 @@ final class MoviesNetworkManager {
             guard let data = data else { return }
             guard let response = response as? HTTPURLResponse else { return }
             guard response.statusCode == 200 else { return }
-            
+            print("Response:", response)
             
             do {
                 let decodedMovie = try JSONDecoder().decode(SearchResponse.self, from: data)
+                let movies = decodedMovie.search
+                let totalResult = Int(decodedMovie.totalResults)
                 DispatchQueue.main.async {
-                    completion(decodedMovie.search)
+                    completion(movies, totalResult ?? 0)
+                    print("movies decoded")
                 }
             } catch {
-                completion(nil)
-                print("decode error \(error)")
+                DispatchQueue.main.async {
+                    completion(nil, 0)
+                    print("decode error \(error)")
+                }
             }
         }.resume()
     }
     
-    //MARK - networking for getting details of the specific movie
-    
+    //MARK: - Networking for getting details of the specific movie
     func getDetails(imdbID: String, completion: @escaping (MovieDetails) -> Void) {
         let url = MovieNetworkAPI.getDetailsUrl(imdbID: imdbID)
         
@@ -54,6 +58,7 @@ final class MoviesNetworkManager {
             guard let data = data else { return }
             guard let response = response as? HTTPURLResponse else { return }
             guard response.statusCode == 200 else { return }
+            print("Response:", response)
             
             
             do {
@@ -63,7 +68,9 @@ final class MoviesNetworkManager {
                     print("completed")
                 }
             } catch {
-                print("decode error\(error)")
+                DispatchQueue.main.async {
+                    print("decode error\(error)")
+                }
             }
         }.resume()
     }
